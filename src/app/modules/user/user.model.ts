@@ -61,7 +61,15 @@ userSchema.pre('save', async function (next) {
 //   next()
 // })
 
-// instance method for checking if the user is exist
+// method for checking if the user is exist
+userSchema.statics.isUserExistsById = async function (id: string) {
+  return await User.findById({ id }).select('+password')
+}
+
+// method for checking is the user is exist by email
+userSchema.statics.isUserExistsByEmail = async function (email: string) {
+  return await User.findOne({ email }).select('+password')
+}
 userSchema.statics.isUserExistsById = async function (id: string) {
   return await User.findOne({ id }).select('+password')
 }

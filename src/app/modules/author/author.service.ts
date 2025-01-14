@@ -15,7 +15,7 @@ const getAllAuthorsFromDB = async (query: Record<string, unknown>) => {
 }
 
 const getSingleAuthorFromDB = async (id: string) => {
-  const result = await Author.findById(id)
+  const result = await Author.findById(id).populate('Blogs')
   return result
 }
 

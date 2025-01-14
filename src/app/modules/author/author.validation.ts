@@ -6,7 +6,7 @@ const userNameSchema = z.object({
   lastName: z.string(),
 })
 
-export const createStudentValidation = z.object({
+export const createAuthorValidation = z.object({
   body: z.object({
     author: z.object({
       email: z.string().email(),

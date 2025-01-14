@@ -9,6 +9,7 @@ import handleValidationError from '../errors/handleValidationError'
 import handleCastError from '../errors/handleCastError'
 import handleDuplicateError from '../errors/handleDuplicateError'
 import AppError from '../errors/AppError'
+import config from '../config'
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next): any => {
   let statusCode = 500
@@ -60,12 +61,12 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next): any => {
     ]
   }
 
-  return res.status(500).json({
+  return res.status(statusCode).json({
     success: false,
     message,
-    statusCode: err.statusCode,
+    statusCode: statusCode,
     error,
-    stack: process.env.NODE_ENV === 'development' ? err.stack : null,
+    stack: config.node_env === 'development' ? err.stack : null,
   })
 }
 

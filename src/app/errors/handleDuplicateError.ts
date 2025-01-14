@@ -12,17 +12,17 @@ const handleDuplicateError = (
   // The extracted value will be in the first capturing group
   const extractedMessage = match && match[1]
 
-  const errorSource: TErrorSource = [
+  const error: TErrorSource = [
     {
       path: '',
-      message: `${extractedMessage} already exists`,
+      details: `${extractedMessage} already exists`,
     },
   ]
 
   return {
     statusCode,
     message: 'Duplicate error',
-    errorSource,
+    error,
   }
 }
 

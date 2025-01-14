@@ -14,8 +14,8 @@ const createAuthor = catchAsync(async (req, res) => {
     message: 'Author is created successfully',
     data: result,
   })
-});
+})
 
 export const UserController = {
-    createAuthor,
+  createAuthor,
 }

@@ -6,10 +6,11 @@ const userNameSchema = z.object({
   lastName: z.string(),
 })
 
-export const createAuthorValidation = z.object({
+export const createAuthorValidationSchema = z.object({
   body: z.object({
     author: z.object({
       email: z.string().email(),
+      password: z.string().min(8),
       name: userNameSchema,
       gender: z.enum(['male', 'female', 'others']),
       dateOfBirth: z.string().optional(),

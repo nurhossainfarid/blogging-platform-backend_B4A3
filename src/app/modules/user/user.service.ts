@@ -18,6 +18,9 @@ const createAuthorIntoDb = async (payload: TAuthor) => {
   try {
     session.startTransaction()
 
+    userData.email = payload.email
+    userData.password = payload.password
+
     // create user (transaction-1)
     const newUser = await User.create([userData], { session })
 

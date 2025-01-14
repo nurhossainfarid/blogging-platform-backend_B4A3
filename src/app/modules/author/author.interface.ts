@@ -10,6 +10,7 @@ export type TAuthor = {
   email: string
   user: Types.ObjectId
   name: TAuthorName
+  password: string
   gender: 'male' | 'female' | 'others'
   dateOfBirth?: string
   contactNo: string

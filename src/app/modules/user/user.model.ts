@@ -15,7 +15,6 @@ const userSchema = new Schema<TUser, UserModel>(
       type: String,
       required: [true, 'Password is required'],
       minlength: [8, 'Password must be at least 8 characters long'],
-      select: 0,
     },
     needsPasswordChange: {
       type: Boolean,
@@ -44,6 +43,7 @@ const userSchema = new Schema<TUser, UserModel>(
   { timestamps: true },
 )
 
+// pre save middleware/hook document middleware
 userSchema.pre('save', async function (next) {
   // eslint-disable-next-line @typescript-eslint/no-this-alias
   const user = this
@@ -52,13 +52,14 @@ userSchema.pre('save', async function (next) {
     user.password,
     Number(config.bcrypt_salt_rounds),
   )
+
   next()
 })
 
-userSchema.post('save', function (doc, next) {
-  doc.password = ''
-  next()
-})
+// userSchema.post('save', function (doc, next) {
+//   doc.password = ''
+//   next()
+// })
 
 // instance method for checking if the user is exist
 userSchema.statics.isUserExistsById = async function (id: string) {

@@ -1,5 +1,23 @@
 import { model, Schema } from 'mongoose'
-import { TAuthor } from './author.interface'
+import { TAuthor, TAuthorName } from './author.interface'
+
+// student name Schema
+const nameSchema = new Schema<TAuthorName>({
+  firstName: {
+    type: String,
+    trim: true,
+    required: [true, 'First Name is required'],
+    maxLength: [20, 'First name less than 20 characters'],
+  },
+  middleName: {
+    type: String,
+  },
+  lastName: {
+    type: String,
+    required: [true, 'Last Name is required'],
+    trim: true,
+  },
+})
 
 const authorSchema = new Schema<TAuthor>(
   {
@@ -16,7 +34,7 @@ const authorSchema = new Schema<TAuthor>(
       ref: 'User',
     },
     name: {
-      type: String,
+      type: nameSchema,
       required: [true, 'Name is required'],
       trim: true,
     },
@@ -70,9 +88,9 @@ const authorSchema = new Schema<TAuthor>(
   },
 )
 
-authorSchema.virtual('fullName').get(function () {
-  return `${this?.name?.firstName} ${this?.name?.middleName} ${this?.name?.lastName}`
-})
+// authorSchema.virtual('fullName').get(function() {
+//   return `${this?.name?.firstName} ${this?.name?.middleName} ${this?.name?.lastName}`
+// })
 
 authorSchema.pre('find', async function (next) {
   this.find({ isDeleted: { $ne: true } })

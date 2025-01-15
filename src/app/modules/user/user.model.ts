@@ -1,35 +1,75 @@
 import { model, Schema } from 'mongoose'
-import { TUser, UserModel } from './user.interface'
 import bcrypt from 'bcrypt'
 import config from '../../config'
+import { TUser, UserModel } from './user.interface'
+
 
 const userSchema = new Schema<TUser, UserModel>(
   {
     email: {
       type: String,
-      required: [true, 'email is required'],
+      required: [true, 'Email is required'],
       unique: true,
       trim: true,
     },
     password: {
       type: String,
       required: [true, 'Password is required'],
-      minlength: [8, 'Password must be at least 8 characters long'],
-    },
-    needsPasswordChange: {
-      type: Boolean,
-      default: false,
-    },
-    passwordChangedAt: {
-      type: Date,
+      select: 0,
     },
     role: {
       type: String,
       enum: {
-        values: ['admin', 'author'],
-        message: "Role must be one of 'author', or 'admin'",
+        values: ['admin', 'user'],
+        message: '{VALUE} is not valid',
       },
-      required: [true, 'User role is required'],
+      default: 'user',
+    },
+    name: {
+      type: String,
+      required: [true, 'Name is required'],
+      trim: true,
+    },
+
+    gender: {
+      type: String,
+      enum: {
+        values: ['male', 'female', 'others'],
+        message: '{VALUE} is not valid',
+      },
+    },
+    dateOfBirth: {
+      type: String,
+    },
+    contactNo: {
+      type: String,
+      trim: true,
+    },
+    bloodGroup: {
+      type: String,
+      enum: {
+        values: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
+        message: '{VALUE} is not valid',
+      },
+    },
+    presentAddress: {
+      type: String,
+    },
+    permanentAddress: {
+      type: String,
+    },
+    profileImg: {
+      type: String,
+    },
+    Blogs: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Blog',
+      },
+    ],
+    needsPasswordChange: {
+      type: Boolean,
+      default: false,
     },
     isBlocked: {
       type: Boolean,
@@ -40,7 +80,9 @@ const userSchema = new Schema<TUser, UserModel>(
       default: false,
     },
   },
-  { timestamps: true },
+  {
+    timestamps: true,
+  },
 )
 
 // pre save middleware/hook document middleware
@@ -58,6 +100,16 @@ userSchema.pre('save', async function (next) {
 
 userSchema.post('save', function (doc, next) {
   doc.password = ''
+  next()
+})
+
+userSchema.pre('find', async function (next) {
+  this.find({ isDeleted: { $ne: true } })
+  next()
+})
+
+userSchema.pre('findOne', async function (next) {
+  this.find({ isDeleted: { $ne: true } })
   next()
 })
 
@@ -82,4 +134,5 @@ userSchema.statics.isPasswordMatched = async function (
   return await bcrypt.compare(plainTextPassword, hashedPassword)
 }
 
+// Create the model
 export const User = model<TUser, UserModel>('User', userSchema)

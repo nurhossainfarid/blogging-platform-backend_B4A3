@@ -1,12 +1,19 @@
-import { Model } from 'mongoose'
-import { USER_ROLE } from './user.constant'
+import { Model, Types } from 'mongoose'
 
 export type TUser = {
   email: string
+  name: string
   password: string
+  role: 'admin' | 'user'
+  gender?: 'male' | 'female' | 'others'
+  dateOfBirth?: string
+  contactNo?: string
+  bloodGroup?: 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-'
+  presentAddress?: string
+  permanentAddress?: string
+  profileImg?: string
+  Blogs: Types.ObjectId[]
   needsPasswordChange: boolean
-  passwordChangedAt: Date
-  role: 'admin' | 'author'
   isBlocked: boolean
   isDeleted: boolean
 }
@@ -24,5 +31,3 @@ export interface UserModel extends Model<TUser> {
   // eslint-disable-next-line no-unused-vars
   isPasswordMatched(plainTextPassword: string, hashedPassword: string): boolean
 }
-
-export type TUserRole = keyof typeof USER_ROLE

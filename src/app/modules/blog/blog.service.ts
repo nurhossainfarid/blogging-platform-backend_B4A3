@@ -1,14 +1,14 @@
 import AppError from '../../errors/AppError'
-import { Author } from '../author/author.model'
 import { TBlog } from './blog.interface'
 import httpStatus from 'http-status'
 import { Blog } from './blog.model'
 import QueryBuilder from '../../builder/QueryBuilder'
 import { blogSearchItem } from './blog.constant'
+import { User } from '../user/user.model'
 
 const createBlogIntoDB = async (payload: TBlog) => {
   // check author is exist
-  const isAuthorExist = await Author.findById(payload.author)
+  const isAuthorExist = await User.findById(payload.author)
 
   if (!isAuthorExist) {
     throw new AppError(httpStatus.NOT_FOUND, 'Author is not found')
@@ -17,6 +17,7 @@ const createBlogIntoDB = async (payload: TBlog) => {
   const result = await Blog.create(payload)
 
   isAuthorExist.Blogs.push(result._id)
+  
   await isAuthorExist.save()
 
   return result

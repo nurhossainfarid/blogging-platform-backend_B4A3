@@ -1,4 +1,4 @@
-export const USER_ROLE = {
-  author: 'author',
-  admin: 'admin',
-} as const
+export const userSearchTerm = [
+  'email',
+  'presentAddress',
+]

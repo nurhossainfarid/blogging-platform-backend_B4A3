@@ -1,11 +1,8 @@
 import AppError from '../../errors/AppError'
-import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
-import { TLoginUser } from './auth.interface'
+import { TLoginUser, TRegisterUser } from './auth.interface'
 import httpStatus from 'http-status'
 import { createToken } from './auth.utils'
 import config from '../../config'
-import { JwtPayload } from 'jsonwebtoken'
 import { User } from '../user/user.model'
 
 const loginUser = async (payload: TLoginUser) => {
@@ -171,6 +168,25 @@ const loginUser = async (payload: TLoginUser) => {
 //   }
 // }
 
+const registrationUser = async (payload: TRegisterUser) => {
+  const user = await User.isUserExistsByEmail(payload.email)
+
+  if (user) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'This user is already exists!')
+  }
+
+  const {
+    email,
+    name,
+  } = await User.create(payload)
+
+  return {
+    email,
+    name,
+  }
+}
+
 export const AuthServices = {
   loginUser,
+  registrationUser,
 }

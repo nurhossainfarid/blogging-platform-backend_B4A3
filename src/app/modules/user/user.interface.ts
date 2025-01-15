@@ -1,4 +1,5 @@
 import { Model } from 'mongoose'
+import { USER_ROLE } from './user.constant'
 
 export type TUser = {
   email: string
@@ -21,5 +22,7 @@ export interface UserModel extends Model<TUser> {
 
   // instance method for check password is matched
   // eslint-disable-next-line no-unused-vars
-  isPasswordMatched(newPassword: string): Promise<void>
+  isPasswordMatched(plainTextPassword: string, hashedPassword: string): boolean
 }
+
+export type TUserRole = keyof typeof USER_ROLE

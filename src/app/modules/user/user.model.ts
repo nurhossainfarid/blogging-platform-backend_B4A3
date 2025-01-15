@@ -56,10 +56,10 @@ userSchema.pre('save', async function (next) {
   next()
 })
 
-// userSchema.post('save', function (doc, next) {
-//   doc.password = ''
-//   next()
-// })
+userSchema.post('save', function (doc, next) {
+  doc.password = ''
+  next()
+})
 
 // method for checking if the user is exist
 userSchema.statics.isUserExistsById = async function (id: string) {

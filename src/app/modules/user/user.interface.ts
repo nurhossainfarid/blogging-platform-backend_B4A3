@@ -1,4 +1,5 @@
 import { Model, Types } from 'mongoose'
+import { USER_ROLE } from './user.constant'
 
 export type TUser = {
   email: string
@@ -31,3 +32,5 @@ export interface UserModel extends Model<TUser> {
   // eslint-disable-next-line no-unused-vars
   isPasswordMatched(plainTextPassword: string, hashedPassword: string): boolean
 }
+
+export type TUserRole = keyof typeof USER_ROLE;

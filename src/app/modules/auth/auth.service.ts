@@ -9,7 +9,7 @@ const loginUser = async (payload: TLoginUser) => {
   const user = await User.isUserExistsByEmail(payload.email)
 
   if (!user) {
-    throw new AppError(httpStatus.NOT_FOUND, 'This user is not found!')
+    throw new AppError(httpStatus.NOT_FOUND, 'Invalid credentials')
   }
 
   // check the user already deleted
@@ -32,7 +32,7 @@ const loginUser = async (payload: TLoginUser) => {
   )
 
   if (!isPasswordMatch) {
-    throw new AppError(httpStatus.UNAUTHORIZED, 'Password do not matched!')
+    throw new AppError(httpStatus.UNAUTHORIZED, 'Invalid credentials')
   }
 
   // create token and sent to the client
@@ -41,7 +41,7 @@ const loginUser = async (payload: TLoginUser) => {
     role: user.role,
   }
 
-  const accessToken = createToken(
+  const token = createToken(
     jwtPayload,
     config.jwt_access_secret as string,
     config.jwt_access_expires_in as string,
@@ -54,9 +54,8 @@ const loginUser = async (payload: TLoginUser) => {
   )
 
   return {
-    accessToken,
+    token,
     refreshToken,
-    needsPasswordChange: user?.needsPasswordChange,
   }
 }
 
@@ -175,12 +174,10 @@ const registrationUser = async (payload: TRegisterUser) => {
     throw new AppError(httpStatus.BAD_REQUEST, 'This user is already exists!')
   }
 
-  const {
-    email,
-    name,
-  } = await User.create(payload)
+  const { _id, email, name } = await User.create(payload)
 
   return {
+    _id,
     email,
     name,
   }

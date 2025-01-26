@@ -10,8 +10,8 @@ type dataFormat<T> = {
 const sendResponse = <T>(res: Response, data: dataFormat<T>) => {
   res.status(data.statusCode).json({
     success: data.success,
-    statusCode: data.statusCode,
     message: data.message,
+    statusCode: data.statusCode,
     data: data.data,
   })
 }

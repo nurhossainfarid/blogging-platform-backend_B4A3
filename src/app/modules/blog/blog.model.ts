@@ -20,18 +20,13 @@ const BlogPostSchema = new Schema<TBlog>(
     },
     isPublished: {
       type: Boolean,
-      required: true,
       default: false,
     },
   },
   {
-    timestamps: true, 
+    timestamps: true,
   },
-);
-
-
+)
 
 // Blog Post Model
 export const Blog = model<TBlog>('Blog', BlogPostSchema)
-
- 

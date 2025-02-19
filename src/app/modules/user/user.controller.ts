@@ -37,8 +37,34 @@ const deleteUser = catchAsync(async (req, res) => {
   })
 })
 
+const updateUserFromDB = catchAsync(async (req, res) => {
+  const { id } = req.params
+  const result = await UserServices.updateUserFromDB(id, req.body)
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User is update successfully',
+    data: result,
+  })
+})
+
+const blockUserIntoDB = catchAsync(async (req, res) => {
+  const { id } = req.params
+  const result = await UserServices.blockUserIntoDB(id)
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User is blocked successfully',
+    data: result,
+  })
+})
+
 export const UserController = {
   getAllUsers,
   getSingleUser,
   deleteUser,
+  updateUserFromDB,
+  blockUserIntoDB,
 }

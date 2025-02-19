@@ -56,8 +56,35 @@ const getSingleBlogFromDB = async (id: string) => {
   return result
 }
 
+const updateBlogInDB = async (id: string, payload: Partial<TBlog>) => {
+  const result = await Blog.findByIdAndUpdate(id, payload, { new: true })
+  return result
+}
+
+const deleteBlogFromDB = async (id: string) => {
+  try {
+    const blog = await Blog.findById(id)
+    if (!blog) {
+      throw new Error('Blog not found')
+    }
+
+    const result = await Blog.findByIdAndDelete(id)
+    if (!result) {
+      throw new Error('Failed to delete blog')
+    }
+
+    await User.findByIdAndUpdate(blog.author, { $pull: { blogs: id } })
+
+    return result
+  } catch (error: any) {
+    throw new AppError(httpStatus.BAD_REQUEST, error.message)
+  }
+}
+
 export const BlogService = {
   createBlogIntoDB,
   getBlogsFromDB,
   getSingleBlogFromDB,
+  updateBlogInDB,
+  deleteBlogFromDB,
 }

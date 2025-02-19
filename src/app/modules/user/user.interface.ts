@@ -2,8 +2,8 @@ import { Model, Types } from 'mongoose'
 import { USER_ROLE } from './user.constant'
 
 export type TUser = {
-  email: string
   name: string
+  email: string
   password: string
   role: 'admin' | 'user'
   gender?: 'male' | 'female' | 'others'

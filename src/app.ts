@@ -10,7 +10,7 @@ app.use(express.json())
 app.use(cors())
 
 // Application routes
-app.use('/api/v1', router)
+app.use('/api', router)
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello Blogging!')

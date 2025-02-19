@@ -5,12 +5,14 @@ import { USER_ROLE } from '../user/user.constant'
 
 const router = express.Router()
 
-router.post('/create-blog', auth(USER_ROLE.user), BlogController.createBlog)
+router.post('/', auth(USER_ROLE.user), BlogController.createBlog)
 
 router.get('/', BlogController.getBlogs)
 
 router.get('/:id', BlogController.getSingleBlog)
 
-// router.delete('/:id', BlogController.deleteAuthor)
+router.put('/:id', auth(USER_ROLE.user), BlogController.updateBlog)
+
+router.delete('/:id', auth(USER_ROLE.admin, USER_ROLE.user), BlogController.deleteBlog)
 
 export const BlogRoutes = router

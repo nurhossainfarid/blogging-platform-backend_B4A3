@@ -1,1 +1,1 @@
-export const blogSearchItem = ['title', 'author', 'isPublished']
+export const blogSearchItem = ['title']
